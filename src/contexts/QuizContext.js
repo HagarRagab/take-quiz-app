@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useEffect } from "react";
 
 const QuizContext = createContext();
 
-const API_URL = `https://mabdurahman.github.io/questions-api/data/reactjs-questions.json`;
+const API_URL = `https://raw.githubusercontent.com/HagarRagab/API/refs/heads/main/questions.json`;
 const SECS_QUIZ_TIME = 30;
 const INIT_STATE = {
     questions: [],
