@@ -2,7 +2,6 @@ import { createContext, useContext, useReducer, useEffect } from "react";
 
 const QuizContext = createContext();
 
-const API_URL = `https://raw.githubusercontent.com/HagarRagab/API/refs/heads/main/questions.json`;
 const SECS_QUIZ_TIME = 30;
 const INIT_STATE = {
     questions: [],
@@ -90,10 +89,17 @@ function QuizProvider({ children }) {
     const scorePoints = questions.reduce((acc, cur) => (acc += cur.points), 0);
 
     useEffect(function () {
-        fetch(API_URL)
-            .then((res) => res.json())
-            .then((data) => dispatch({ type: "dataReceived", payload: data }))
-            .catch(() => dispatch({ type: "dataFailed" }));
+        const fetchQuestions = async () => {
+            try {
+                const res = await fetch("/data/questions.json");
+                if (!res.ok) throw new Error("Cannot get questions");
+                const data = await res.json();
+                dispatch({ type: "dataReceived", payload: data });
+            } catch (error) {
+                dispatch({ type: "dataFailed" });
+            }
+        };
+        fetchQuestions();
     }, []);
 
     return (
